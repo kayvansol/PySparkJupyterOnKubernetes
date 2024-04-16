@@ -21,6 +21,11 @@ you can install helm via the link [helm](https://helm.sh/docs/intro/install) :
 ***
 
 The Steps :
+
+you can install helm chart via the link [helm chart](https://artifacthub.io/packages/helm/bitnami/spark/8.7.2?modal=install) :
+
+**Note:** the spark version of helm char must be the same as the PySpark version of jupyter
+
 1) Install spark via helm chart **(bitnami)** :
 
 <img src="https://raw.githubusercontent.com/kayvansol/SparkOnKubernetes/main/img/bitnami.png" width="500" height="200">
@@ -85,5 +90,24 @@ spec:
 
 the installed **pods** :
 
+![alt text](https://raw.githubusercontent.com/kayvansol/PySparkJupyterOnKubernetes/main/img/PysparkJupyter0.png?raw=true)
+
 and **Services** (headless for statefull) :
 
+![alt text](https://raw.githubusercontent.com/kayvansol/PySparkJupyterOnKubernetes/main/img/PysparkJupyter1.png?raw=true)
+
+3) Open jupyter notebook and write some python codes based on pyspark :
+```python
+
+import os
+
+#os.environ['PYSPARK_SUBMIT_ARGS']='pyspark-shell'
+#os.environ['PYSPARK_PYTHON']='/opt/bitnami/python/bin/python'
+#os.environ['PYSPARK_DRIVER_PYTHON']='/opt/bitnami/python/bin/python'
+
+from pyspark.sql import SparkSession
+
+spark = SparkSession.builder.master("spark://kayvan-release-spark-master-0.kayvan-release-spark-headless.default.svc.cluster.local:7077")\
+            .appName("Mahla").config('spark.driver.host', socket.gethostbyname(socket.gethostname()))\
+            .getOrCreate()
+```
