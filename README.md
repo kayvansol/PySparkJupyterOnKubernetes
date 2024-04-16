@@ -33,7 +33,7 @@ you can install helm chart via the link [helm chart](https://artifacthub.io/pack
 ```
 $ helm repo add bitnami https://charts.bitnami.com/bitnami
 $ helm search repo bitnami
-$ helm install kayvan-release  bitnami/spark --version 8.7.2
+$ helm install kayvan-release bitnami/spark --version 8.7.2
 ```
 
 2) Deploy Jupyter workloads :
@@ -89,9 +89,9 @@ spec:
     app: spark
 ```
 
-'''
+```
 kubectl apply -f jupyter.yaml
-'''
+```
 
 the installed **pods** :
 
@@ -131,4 +131,4 @@ spark = SparkSession.builder.master("spark://kayvan-release-spark-master-0.kayva
 
 enjoying from sending python codes to spark cluster on kubernetes via jupyter.
 
-Note: of course you can work with pyspark single node installed on jupyter without kubernetes and when you are sure of correction of the code, send it via spark-submit or like above code to spark cluster on kubernetes.
+Note: of course you can work with pyspark single node installed on jupyter without kubernetes and when you will be sure that the code is correct, then send it via spark-submit or like above code to spark cluster on kubernetes.
