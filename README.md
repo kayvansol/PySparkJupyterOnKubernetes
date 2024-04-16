@@ -123,6 +123,11 @@ spark = SparkSession.builder.master("spark://kayvan-release-spark-master-0.kayva
 
 ```
 
+note: 
+```
+socket.gethostbyname(socket.gethostname()) ---> returns the jupyter pod's ip address
+```
+
 ![alt text](https://raw.githubusercontent.com/kayvansol/PySparkJupyterOnKubernetes/main/img/PysparkJupyter.png?raw=true)
 
 ![alt text](https://raw.githubusercontent.com/kayvansol/PySparkJupyterOnKubernetes/main/img/PysparkJupyter2.png?raw=true)
