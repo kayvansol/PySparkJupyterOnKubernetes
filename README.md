@@ -137,3 +137,104 @@ socket.gethostbyname(socket.gethostname()) ---> returns the jupyter pod's ip add
 enjoying from sending python codes to spark cluster on kubernetes via jupyter.
 
 Note: of course you can work with pyspark single node installed on jupyter without kubernetes and when you will be sure that the code is correct, then send it via spark-submit or like above code to spark cluster on kubernetes.
+
+***
+
+# Deploy on the Docker Desktop :
+
+docker-compose.yml :
+
+```yaml
+version: '3.6'
+
+services:
+
+  spark-master:
+    container_name: spark
+    image: docker.arvancloud.ir/bitnami/spark:3.5.0
+    environment:
+      - SPARK_MODE=master
+      - SPARK_RPC_AUTHENTICATION_ENABLED=no
+      - SPARK_RPC_ENCRYPTION_ENABLED=no
+      - SPARK_LOCAL_STORAGE_ENCRYPTION_ENABLED=no
+      - SPARK_SSL_ENABLED=no
+      - SPARK_USER=root   
+      - PYSPARK_PYTHON=/opt/bitnami/python/bin/python3
+    ports:
+      - 127.0.0.1:8081:8080
+      - 127.0.0.1:7077:7077
+    networks:
+      - spark-network
+    
+
+  spark-worker:
+    image: docker.arvancloud.ir/bitnami/spark:3.5.0
+    environment:
+      - SPARK_MODE=worker
+      - SPARK_MASTER_URL=spark://spark:7077
+      - SPARK_WORKER_MEMORY=2G
+      - SPARK_WORKER_CORES=2
+      - SPARK_RPC_AUTHENTICATION_ENABLED=no
+      - SPARK_RPC_ENCRYPTION_ENABLED=no
+      - SPARK_LOCAL_STORAGE_ENCRYPTION_ENABLED=no
+      - SPARK_SSL_ENABLED=no
+      - SPARK_USER=root
+      - PYSPARK_PYTHON=/opt/bitnami/python/bin/python3
+    networks:
+      - spark-network
+
+
+  jupyter:
+    image:  docker.arvancloud.ir/jupyter/all-spark-notebook:latest
+    container_name: jupyter
+    ports:
+      - "8888:8888"
+    environment:
+      - JUPYTER_ENABLE_LAB=yes
+    networks:
+      - spark-network
+    depends_on:
+      - spark-master
+
+
+networks:
+  spark-network:
+```
+
+run in cmd :
+```bash
+docker-compose up --scale spark-worker=2
+```
+
+![alt text](https://raw.githubusercontent.com/kayvansol/PySparkJupyterOnKubernetes/main/img/PysparkJupyter4.png?raw=true)
+
+Copy csv file to inside spark worker container :
+```bash
+docker cp file.csv spark-worker-1:/opt/file
+docker cp file.csv spark-worker-2:/opt/file
+```
+
+Open jupyter notebook and write some python codes based on pyspark and press **shift + enter** keys on each block to execute:
+
+```python
+from pyspark.sql import SparkSession
+
+# Create a Spark session
+spark = SparkSession.builder.appName("YourAppName").master("spark://8fa1bd982ade:7077").getOrCreate()
+
+```
+
+```python
+data = spark.read.csv("/opt/file/file.csv", header=True)
+data.limit(3).show()
+```
+
+```python
+spark.stop()
+```
+
+![alt text](https://raw.githubusercontent.com/kayvansol/PySparkJupyterOnKubernetes/main/img/PysparkJupyter5.png?raw=true)
+
+![alt text](https://raw.githubusercontent.com/kayvansol/PySparkJupyterOnKubernetes/main/img/PysparkJupyter6.png?raw=true)
+
+Note again: you can work with pyspark single node installed on jupyter without spark cluster and when you will be sure that the code is correct, then send it via spark-submit or like above code to spark cluster on docker desktop.
