@@ -238,3 +238,30 @@ spark.stop()
 ![alt text](https://raw.githubusercontent.com/kayvansol/PySparkJupyterOnKubernetes/main/img/PysparkJupyter6.png?raw=true)
 
 Note again: you can work with pyspark single node installed on jupyter without spark cluster and when you will be sure that the code is correct, then send it via spark-submit or like above code to spark cluster on docker desktop.
+
+***
+
+# Execute on the pyspark that installed on jupyter, no on spark cluster
+
+Copy csv file to inside jupyter container :
+```bash
+docker cp file.csv jupyter:/opt/file
+```
+
+```python
+from pyspark.sql import SparkSession
+
+# Create a Spark session
+spark = SparkSession.builder.appName("YourAppName").getOrCreate()
+
+data = spark.read.csv("/opt/file/file.csv", header=True)
+data.limit(3).show()
+
+spark.stop()
+
+```
+
+and also you can practice on single node pyspark in jupyter :
+
+![alt text](https://raw.githubusercontent.com/kayvansol/PySparkJupyterOnKubernetes/main/img/PysparkJupyter7.png?raw=true)
+
