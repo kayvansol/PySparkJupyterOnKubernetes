@@ -96,10 +96,12 @@ and **Services** (headless for statefull) :
 
 ![alt text](https://raw.githubusercontent.com/kayvansol/PySparkJupyterOnKubernetes/main/img/PysparkJupyter1.png?raw=true)
 
+Note: **spark master url** address is : spark://kayvan-release-spark-master-0.kayvan-release-spark-headless.default.svc.cluster.local:7077
+
 3) Open jupyter notebook and write some python codes based on pyspark :
 ```python
 
-import os
+#import os
 
 #os.environ['PYSPARK_SUBMIT_ARGS']='pyspark-shell'
 #os.environ['PYSPARK_PYTHON']='/opt/bitnami/python/bin/python'
@@ -110,4 +112,14 @@ from pyspark.sql import SparkSession
 spark = SparkSession.builder.master("spark://kayvan-release-spark-master-0.kayvan-release-spark-headless.default.svc.cluster.local:7077")\
             .appName("Mahla").config('spark.driver.host', socket.gethostbyname(socket.gethostname()))\
             .getOrCreate()
+
 ```
+![alt text](https://raw.githubusercontent.com/kayvansol/PySparkJupyterOnKubernetes/main/img/PysparkJupyter.png?raw=true)
+
+![alt text](https://raw.githubusercontent.com/kayvansol/PySparkJupyterOnKubernetes/main/img/PysparkJupyter2.png?raw=true)
+
+![alt text](https://raw.githubusercontent.com/kayvansol/PySparkJupyterOnKubernetes/main/img/PysparkJupyter3.png?raw=true)
+
+enjoying from sending python codes to spark cluster on kubernetes via jupyter.
+
+Note: of course you can work with pyspark single node installed on jupyter without kubernetes and when you are sure of correction of the code, send it via spark-submit or like above code to spark cluster on kubernetes.
