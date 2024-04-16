@@ -24,7 +24,7 @@ The Steps :
 
 you can install helm chart via the link [helm chart](https://artifacthub.io/packages/helm/bitnami/spark/8.7.2?modal=install) :
 
-**Note:** the spark version of helm char must be the same as the PySpark version of jupyter
+**Important:** the spark version of helm chart must be the same as the PySpark version of jupyter
 
 1) Install spark via helm chart **(bitnami)** :
 
@@ -38,6 +38,7 @@ $ helm install kayvan-release  bitnami/spark --version 8.7.2
 
 2) Deploy Jupyter workloads :
 
+jupyter.yaml :
 ```yaml
 apiVersion: apps/v1
 kind: Deployment
@@ -88,6 +89,10 @@ spec:
     app: spark
 ```
 
+'''
+kubectl apply -f jupyter.yaml
+'''
+
 the installed **pods** :
 
 ![alt text](https://raw.githubusercontent.com/kayvansol/PySparkJupyterOnKubernetes/main/img/PysparkJupyter0.png?raw=true)
@@ -96,9 +101,12 @@ and **Services** (headless for statefull) :
 
 ![alt text](https://raw.githubusercontent.com/kayvansol/PySparkJupyterOnKubernetes/main/img/PysparkJupyter1.png?raw=true)
 
-Note: **spark master url** address is : spark://kayvan-release-spark-master-0.kayvan-release-spark-headless.default.svc.cluster.local:7077
+Note: **spark master url** address is : 
+```
+spark://kayvan-release-spark-master-0.kayvan-release-spark-headless.default.svc.cluster.local:7077
+```
 
-3) Open jupyter notebook and write some python codes based on pyspark :
+3) Open jupyter notebook and write some python codes based on pyspark and press **shift + enter** keys on each block to execute:
 ```python
 
 #import os
@@ -114,6 +122,7 @@ spark = SparkSession.builder.master("spark://kayvan-release-spark-master-0.kayva
             .getOrCreate()
 
 ```
+
 ![alt text](https://raw.githubusercontent.com/kayvansol/PySparkJupyterOnKubernetes/main/img/PysparkJupyter.png?raw=true)
 
 ![alt text](https://raw.githubusercontent.com/kayvansol/PySparkJupyterOnKubernetes/main/img/PysparkJupyter2.png?raw=true)
