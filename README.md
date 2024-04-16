@@ -1,7 +1,9 @@
 
-# PySpark &amp; Jupyter Notebooks Deployed OnKubernetes
+# PySpark &amp; Jupyter Notebooks Deployed On Kubernetes
 
-Spark On Kubernetes via **helm chart**
+![alt text](https://raw.githubusercontent.com/kayvansol/PySparkJupyterOnKubernetes/main/img/logo.png?raw=true)
+
+Install Spark On Kubernetes via **helm chart**
 
 The control-plane & worker nodes addresses are :
 ```
@@ -10,7 +12,6 @@ The control-plane & worker nodes addresses are :
 192.168.56.117
 ```
 ![alt text](https://raw.githubusercontent.com/kayvansol/Ingress/main/pics/vmnet.png?raw=true)
-
 
 Kubernetes cluster **nodes** :
 
